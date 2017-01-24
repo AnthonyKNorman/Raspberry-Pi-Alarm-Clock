@@ -22,7 +22,6 @@
 import Adafruit_GPIO as GPIO
 import Adafruit_GPIO.SPI as SPI
 import ili9341
-import lcd_gfx
 import time
 from PIL import Image, ImageFont, ImageDraw
 
