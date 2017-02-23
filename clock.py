@@ -19,8 +19,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import Adafruit_GPIO as GPIO
-import Adafruit_GPIO.SPI as SPI
+import RPi.GPIO as GPIO
+import spidev as SPI
 import ili9341
 import time
 from PIL import Image, ImageFont, ImageDraw
@@ -56,26 +56,27 @@ def dec_to_digit_strings(val):
 	return d1,d2
 
 # setup gpio
-gpio = GPIO.get_platform_gpio()
+GPIO.setmode(GPIO.BCM)
+
 # set the solenoid pin to output
-gpio.setup(SOLENOID,GPIO.OUT)
+GPIO.setup(SOLENOID,GPIO.OUT)
 
 # solenoid off
-gpio.output(SOLENOID, False)
+GPIO.output(SOLENOID, False)
 
 
 def chime(t):
-	gpio.output(SOLENOID, True)
+	GPIO.output(SOLENOID, True)
 	time.sleep(t)
-	gpio.output(SOLENOID, False)
+	GPIO.output(SOLENOID, False)
 
 def chimes(z):
 	for x in range(z):
-		chime(0.1)		
+		chime(0.05)		
 		time.sleep(1)
 
 # Create TFT LCD display class.
-disp = ili9341.ili9341(DC, rst=RST, spi=SPI.SpiDev(SPI_PORT, SPI_DEVICE, max_speed_hz=64000000))
+disp = ili9341.ili9341(DC, spi=SPI.SpiDev(), rst=RST)
 
 # Initialize display.
 disp.begin()
